@@ -1,0 +1,28 @@
+// Fonts Definition
+@font-face {
+  font-family: 'KoPubDotumMedium';
+  src: url('//cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/KoPubDotumMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*:not(i) {
+  font-family: 'KoPubDotumMedium', sans-serif;
+}
+
+*:not([class*="uk-"]):not(.lnb *) {
+  line-height: 1.15;
+}
+
+.uk-button {
+  font-weight: bold;
+}
+
+html, body {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+i {
+  font-size: 110%;
+}

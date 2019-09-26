@@ -1,0 +1,29 @@
+@import "../media";
+
+.container-wrapper {
+  position: relative;
+  min-height: 80vh;
+  margin: 20px 20px 50px 20px;
+  & [data-role='app-title'] {
+    font-weight: 400;
+    color: #C6C6C6;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    transition: .4s all ease;
+  }
+  & .section:hover [data-role='app-title'] {
+    font-weight: 700;
+    color: #dc3545;
+  }
+}
+
+.valign-center {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 24px);
+  transform: translate(-50%);
+}
+
+.full-width {
+  width: 100%;
+}

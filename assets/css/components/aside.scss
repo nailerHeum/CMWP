@@ -1,0 +1,78 @@
+aside {
+    width: 49px;
+    height: calc(100% - 49px);
+    position: fixed;
+    left: 0;
+    top: 49px;
+    overflow: hidden;
+    z-index: 1007;
+    background: #FFF;
+    -webkit-box-shadow: 2px 0 2px -1px rgba(152, 162, 179, 0.3);
+    box-shadow: 2px 0 2px -1px rgba(152, 162, 179, 0.3);
+    -webkit-transition: width 90ms cubic-bezier(0.694, 0.0482, 0.335, 1);
+    transition: width 90ms cubic-bezier(0.694, 0.0482, 0.335, 1);
+    -webkit-transition-delay: 150ms;
+    transition-delay: 150ms;
+}
+
+ul.apps {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    > .divider {
+      display: none;
+      font-weight: 700;
+      font-size: .8rem;
+      margin: 1rem 0 .5rem 0;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid #e6e6e6;
+      > div > p {
+        padding-left: 1rem;
+      }
+    }
+    > .gnb-link {
+      position: relative;
+      width: 49px;
+      height: 49px;
+      transition: .2s all ease;
+      > a {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: inherit;
+        height: inherit;
+        line-height: 49px;
+        align-content: center;
+        font-weight: 600;
+        font-size: 1rem;
+        color: #B4C2DA;
+        text-decoration: none;
+        transition: .5s all ease;
+        &:hover {
+          color: #fff;
+          background: #dc3545;
+          font-weight: 700;
+        }
+      }
+      & .nuxt-link-exact-active {
+        position: relative;
+        text-align: center;
+        border: none;
+        color: #fff;
+        background: #0054a6;
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+    & .gnb-link.has-divider:after {
+        position: absolute;
+        content: '';
+        bottom: 0;
+        background: #D3DAE6;
+        left: 0;
+        width: 49px;
+        height: 1px;
+      }
+}

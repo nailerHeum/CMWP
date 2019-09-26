@@ -1,0 +1,31 @@
+// Main Content wrapper
+@import "./common";
+@import "./form/common";
+@import "../fonts/fonts";
+
+main {
+    position: relative;
+    width: calc(100% - 49px);
+    left: 50px;
+    top: 50px;
+    height: calc(100vh - 50px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background: #F3F4FC;
+}
+
+[data-role="content-start"] {
+    min-height: 80vh;
+}
+
+[data-role='communities-results'] {
+    margin-top: 20px;
+}
+
+#appliedInt > .count {
+  opacity: .5;
+  transition: .25s opacity ease-out;
+  &:hover {
+    opacity: 1;
+  }
+}

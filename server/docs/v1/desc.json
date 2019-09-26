@@ -1,0 +1,313 @@
+{
+  "swagger": "2.0",
+  "basePath": "/api/v2",
+  "host": "localhost",
+  "info": {
+    "title": "Communities' Posts Monitoring Portal API",
+    "version": "2.1.0328",
+    "description": "커뮤니티게시물모니터링포털 API"
+  },
+  "produces": ["application/json"],
+  "paths": {
+    "/communities": {
+      "get": {
+        "tags": [
+          "communities"
+        ],
+        "summary": "Communities code list",
+        "description": "",
+        "operationId": "commCodes",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/communities/{site}": {
+      "get": {
+        "tags": ["communities"],
+        "summary": "Get certain posts by keyword from certain comm",
+        "description": "",
+        "operationId": "commCrawl",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "path",
+            "required": true,
+            "description": "사이트 특정",
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "사이트 내에서 검색할 키워드 정의",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/communities/{site}/all": {
+      "get": {
+        "tags": [
+          "communities"
+        ],
+        "summary": "Get all posts from certain comm",
+        "description": "",
+        "operationId": "commCrawlAll",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "path",
+            "required": true,
+            "description": "사이트 특정",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/communities/{site}/get_content": {
+      "get": {
+        "tags": [
+          "communities"
+        ],
+        "summary": "Get post content from certain comm",
+        "description": "",
+        "operationId": "commCrawlContent",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "path",
+            "required": true,
+            "description": "사이트 특정",
+            "type": "string"
+          },
+          {
+            "name": "site_url",
+            "in": "query",
+            "required": true,
+            "description": "해당 게시물 주소",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/tumblr/{blogger}/{post_id}": {
+      "get": {
+        "tags": ["tumblr"],
+        "summary": "Track original post uploader using the permalink",
+        "description": "",
+        "operationId": "tumblrTrackOrigin",
+        "parameters": [
+          {
+            "name": "blogger",
+            "in": "path",
+            "required": true,
+            "description": "블로거 ID 특정",
+            "type": "string"
+          },
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "description": "게시물 ID 특정",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/social/twitter/{keyword}": {
+      "get": {
+        "tags": ["social"],
+        "summary": "Get tweets",
+        "description": "",
+        "operationId": "socCrawl",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "required": true,
+            "description": "키워드 특정",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/service/screenshot": {
+      "get": {
+        "tags": ["services"],
+        "summary": "Get screenshot and save",
+        "description": "",
+        "operationId": "getScreenshot",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "스크린샷할 URL",
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "services"
+        ],
+        "summary": "Save screenshot",
+        "description": "",
+        "operationId": "saveScreenshot",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "required": true,
+            "description": "스크린샷할 URL (Base64 encoded)",
+            "type": "string"
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "services"
+        ],
+        "summary": "Remove screenshot",
+        "description": "",
+        "operationId": "removeScreenshot",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "body",
+            "required": true,
+            "description": "제거할 URL (Base64 encoded)",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/intelligences": {
+      "get": {
+        "tags": ["intelligences"],
+        "summary": "Get intelligences list",
+        "operationId": "getIntelligences",
+        "responses": {
+          "200": {
+             "description": "Success"
+          }
+        }
+      },
+      "/intelligences/_doc": {
+        "post": {
+          "tags": ["intelligences"],
+          "summary": "Add an intelligence",
+          "operationId": "addIntelligence",
+          "repsonses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["intelligences"],
+          "summary": "Remove an intelligence",
+          "operationId": "removeIntelligence",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      }
+    },
+    "/search/images/{keyword}": {
+      "get": {
+        "tags": ["images"],
+        "summary": "Search associated images",
+        "operationId": "searchImage",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "path",
+            "required": true,
+            "description": "키워드 특정",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/service/kibana": {
+      "get": {
+        "tags": ["services"],
+        "summary": "Get kibana status",
+        "operationId": "getKibanaStatus",
+        "responses": {
+          "200": {
+            "description": "Service Available"
+          },
+          "500": {
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "communities",
+      "description": "커뮤니티 크롤링"
+    },
+    {
+      "name": "social",
+      "description": "소셜커뮤니티서비스 크롤링"
+    },
+    {
+      "name": "intelligences",
+      "description": "첩보 관리"
+    },
+    {
+      "name": "tumblr",
+      "description": "텀블러 원본 추적"
+    },
+    {
+      "name": "images",
+      "description": "연상 이미지 검색"
+    },
+    {
+      "name": "services",
+      "description": "기본 서비스"
+    }
+  ],
+  "schemes": [
+    "http"
+  ]
+}

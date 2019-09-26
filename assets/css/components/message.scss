@@ -1,0 +1,32 @@
+// UIKit Custom Design
+[class*='uk-alert-'] {
+    color: #fff;
+    > p {
+        font-size: 1.2rem;
+    }
+}
+
+.uk-alert-warning {
+    background: #faa05a;
+}
+
+.uk-alert-danger {
+    background: #f0506e;
+}
+
+.uk-alert-success {
+    background: #32d296;
+}
+
+.uk-alert-primary {
+    background: #1e87f0;
+}
+
+.uk-badge {
+    background: #fff;
+    color: #3e3e3e;
+    margin-bottom: 5px;
+    &:hover {
+        color: #3e3e3e;
+    }
+}

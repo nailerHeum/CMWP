@@ -1,0 +1,125 @@
+@import "../fonts/fonts";
+
+html, body {
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  font-size: 1.4rem;
+  color: #000;
+  transition: .2s all ease;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+#services {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: .8rem;
+  >.service {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-gap: .6rem;
+    margin: .6rem 0;
+    border-radius: 2rem;
+    box-shadow: 0px 2px 12px 0px rgba(0,13,57,.1);
+    &:hover {
+      color: #fff;
+      background: linear-gradient(135deg, rgb(61, 91, 220) 0%, rgb(72, 143, 246) 43%, rgb(72, 143, 246) 100%);
+      transform: translateY(-4px);
+      box-shadow: 0px 20px 30px 0px rgba(0,13,56,.2);
+    }
+    > .thumbnail {
+      position: relative;
+      border-radius: 1rem;
+      box-shadow: 0 0 4px rgba(0,0,0,.1);
+      background: #E6E6E6;
+      overflow: hidden;
+      > i {
+        position: absolute;
+        right: -1rem;
+        bottom: -1rem;
+        font-size: 9rem;
+        color: #fff;
+      }
+    }
+    > .description {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 10rem;
+      margin: .4rem 0 .4rem 1rem;
+      padding: 0 .5rem 0 0;
+      > header {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: .5rem;
+      }
+      > .info > p {
+        font-weight: 100;
+      }
+    }
+  }
+}
+
+
+[role='main'] > header {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.container-wrapper {
+  padding: 2rem 2rem;
+  > nav {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    margin-bottom: 2rem;
+  }
+}
+
+[role='title'] {
+  text-indent: -9999px;
+  width: 200px;
+  height: 78px;
+  background: url('~assets/img/logo-main.png') no-repeat center center/contain;
+}
+
+[role='subtitle'] {
+  font-size: 1.4rem;
+  color: #1E3143;
+  opacity: .65;
+}
+
+[role='divider'] {
+  display: inline-block;
+  width: 100px;
+  padding: 0 2rem;
+  margin: 0 1rem;
+  border: 1px solid #1E3143;
+}
+
+.alert {
+  width: 100%;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  padding: 1rem 0;
+  background: red;
+  color: #fff;
+  font-size: 1.6rem;
+  z-index: 100000001;
+}
+
+@media (max-width: 1024px) {
+  #services {
+    grid-template-columns: 1fr;
+    > .service {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+}
