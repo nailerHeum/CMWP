@@ -10,7 +10,50 @@ const jsonStrings = {
     msg_notFound: 'Intelligence Not Found'
 }
 
+const LastDays = (n, option) => {
+  let arr = Array.apply(0, Array(n)).map(function(v,i){return i}), weekday = new Array(7)
+      
+  weekday[0] = "Sunday"
+  weekday[1] = "Monday"
+  weekday[2] = "Tuesday"
+  weekday[3] = "Wednesday"
+  weekday[4] = "Thursday"
+  weekday[5] = "Friday"
+  weekday[6] = "Saturday"
+  
+  return arr.map(function(n) {
+    let date = new Date()
+    date.setDate(date.getDate() - n)
+    return (function(day, month, year, weekendDay) {
+    	switch(option) {
+      	case 'weekday': return weekday[weekendDay]
+      	default: return [year, (month+1)<10 ? '0'+ (month + 1): month+1, day<10 ? '0'+day : day].join('-')
+      }
+    })(date.getDate(), date.getMonth(), date.getFullYear(), date.getDay())
+  })
+}
+
 router.get('/v2/visualize/wordcloud', async (req, res) => {
+  let wordFreq = {};
+  let agg = await Intelligences.aggregate([
+    {
+      $group: {
+        _id: '$item.title'
+      }
+    }
+  ]).exec()
+
+  for (let tmp of agg) {
+    let temp = tmp._id.replace('#', '').replace('@', '').replace('^', '').replace('%', '').replace('&', '').replace('*', '').replace('$', '').replace('.', ' ').replace(',', '').replace('\'', '').replace('"', '').replace('-', '').replace('~', '').replace('?', '').replace('!', '').split(' ')
+    for (let word of temp) {
+      if (!wordFreq[word]) {
+        wordFreq[word] = 1
+      } else {
+        wordFreq[word]++
+      }
+    }
+  }
+
   res.status(200).json({
     tooltip: {},
     series: [ {
@@ -19,133 +62,76 @@ router.get('/v2/visualize/wordcloud', async (req, res) => {
         sizeRange: [12, 50],
         rotationRange: [-90, 90],
         shape: 'pentagon',
-        width: 600,
-        height: 400,
-        drawOutOfBound: true,
+        drawOutOfBound: false,
         textStyle: {
             normal: {
-                color: function () {
-                    return 'rgb(' + [
-                        Math.round(Math.random() * 160),
-                        Math.round(Math.random() * 160),
-                        Math.round(Math.random() * 160)
-                    ].join(',') + ')';
-                }
+                color: function () { return `rgb(${[Math.round(Math.random() * 160), Math.round(Math.random() * 160), Math.round(Math.random() * 160)].join(',')})` }
             },
             emphasis: {
-                shadowBlur: 10,
-                shadowColor: '#333'
+                shadowBlur: 5,
+                shadowColor: '#fafbfc'
             }
         },
-        data: [
-            {
-                name: 'Sam S Club',
-                value: 10000,
-                textStyle: {
-                    normal: {
-                        color: 'black'
-                    },
-                    emphasis: {
-                        color: 'red'
-                    }
-                }
-            },
-            {
-                name: 'Macys',
-                value: 6181
-            },
-            {
-                name: 'Amy Schumer',
-                value: 4386
-            },
-            {
-                name: 'Jurassic World',
-                value: 4055
-            },
-            {
-                name: 'Charter Communications',
-                value: 2467
-            },
-            {
-                name: 'Chick Fil A',
-                value: 2244
-            },
-            {
-                name: 'Planet Fitness',
-                value: 1898
-            },
-            {
-                name: 'Pitch Perfect',
-                value: 1484
-            },
-            {
-                name: 'Express',
-                value: 1112
-            },
-            {
-                name: 'Home',
-                value: 965
-            },
-            {
-                name: 'Johnny Depp',
-                value: 847
-            },
-            {
-                name: 'Lena Dunham',
-                value: 582
-            },
-            {
-                name: 'Lewis Hamilton',
-                value: 555
-            },
-            {
-                name: 'KXAN',
-                value: 550
-            },
-            {
-                name: 'Mary Ellen Mark',
-                value: 462
-            },
-            {
-                name: 'Farrah Abraham',
-                value: 366
-            },
-            {
-                name: 'Rita Ora',
-                value: 360
-            },
-            {
-                name: 'Serena Williams',
-                value: 282
-            },
-            {
-                name: 'NCAA baseball tournament',
-                value: 273
-            },
-            {
-                name: 'Point Break',
-                value: 265
-            }
-        ]
+        data: Object.keys(wordFreq).map((key, index) => ({ name: key, value: wordFreq[key] })).sort((a, b) => (b.value - a.value))
     } ]
   })
 })
 
-router.get('/v2/visualize/metric', async (req, res) => {
-    
+router.get('/v2/visualize/bar', async (req, res) => {
+  let agg = await Intelligences.aggregate([
+    {
+      $group: {
+        _id: '$item.type',
+        count: { $sum : 1 }
+      }
+    }
+  ])
+
+  res.status(200).json({
+    xAxis: {
+        type: 'category',
+        data: ['특이동향', '법규위반의심']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: agg.map((item) => item.count),
+        type: 'bar'
+    }]
+})
 })
 
-router.get('/v2/visualize/bar', async (req, res) => {
+router.get('/v2/visualize/line', async (req, res) => {
+    let days = LastDays(7)
+    let count = [0, 0, 0, 0, 0, 0, 0]
     let agg = await Intelligences.aggregate([
-      {
-        $group: {
-          _id: '$item.meta.site',
-          count: { $sum: 1 }
-        }
-      }
+      { $project: { date: { $split: ["$item.date", "T"] }} },
+      { $unwind: "$date" },
+      { $match: { date: /[0-9]{4}-[0-9]{2}-[0-9]{2}/ } },
+      { $group: { _id: '$date', count: { $sum: 1 } } }
     ]).exec()
 
-    res.status(200).json({ data: agg })
+    for (let tmp of agg) {
+      if (Math.ceil(Math.abs(new Date(days[0]) - new Date(tmp._id))) / (1000 * 60 * 60 * 24) < 7) {
+        count[Math.ceil(Math.abs(new Date(days[0]) - new Date(tmp._id))) / (1000 * 60 * 60 * 24)] = tmp.count
+      }
+    }
+
+    res.status(200).json({
+      xAxis: {
+          type: 'category',
+          data: days
+      },
+      yAxis: {
+          type: 'value'
+      },
+      series: [{
+          data: count,
+          type: 'line',
+          smooth: true
+      }]
+    })
 })
 
 router.get('/v2/visualize/pie', async (req, res) => {
@@ -160,7 +146,7 @@ router.get('/v2/visualize/pie', async (req, res) => {
 
   res.status(200).json({
     title: {
-      text: '주요 특이동향 게시물 스크랩 출처',
+      text: '게시물 스크랩 출처',
       x: 'center'
     },
     tooltip: {

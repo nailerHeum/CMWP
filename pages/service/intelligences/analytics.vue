@@ -7,11 +7,15 @@
         </div>
         <div class="container-wrapper" v-else>
           <header data-role="app-title">커뮤니티 게시물<br><strong>수집데이터 분석</strong></header>
-          <ECharts
-            :options="options"
-            :init-options="initOptions"
-            autoresize
-          />
+          <div class="grid grid-half">
+            <ECharts
+              v-for="option in options"
+              :key="options.indexOf(option)"
+              :options="option"
+              :init-options="initOptions"
+              autoresize
+            />
+          </div>
         </div>
     </main>
 </template>
@@ -21,26 +25,10 @@ import axios from 'axios'
 import Message from '~/components/Message.vue'
 import ECharts from '~/components/ECharts.vue'
 
-import 'echarts-liquidfill'
 import 'echarts-wordcloud'
-
 import '~/node_modules/echarts/lib/chart/bar'
 import '~/node_modules/echarts/lib/chart/line'
 import '~/node_modules/echarts/lib/chart/pie'
-import '~/node_modules/echarts/lib/chart/map'
-import '~/node_modules/echarts/lib/chart/radar'
-import '~/node_modules/echarts/lib/chart/scatter'
-import '~/node_modules/echarts/lib/chart/effectScatter'
-import '~/node_modules/echarts/lib/component/tooltip'
-import '~/node_modules/echarts/lib/component/polar'
-import '~/node_modules/echarts/lib/component/geo'
-import '~/node_modules/echarts/lib/component/legend'
-import '~/node_modules/echarts/lib/component/title'
-import '~/node_modules/echarts/lib/component/visualMap'
-import '~/node_modules/echarts/lib/component/dataset'
-import '~/node_modules/echarts/map/js/world'
-
-import 'zrender/lib/svg/svg'
 
 export default {
   layout: 'service',
@@ -50,7 +38,7 @@ export default {
   },
   computed: {
     getCount () {
-      return this.$store.getters['intelligences/getCount']
+      return this.$store.getters['intelligences/getCount'].reduce((a, b) => a + b)
     },
     chkError () {
       return this.$store.getters['intelligences/chkError']
@@ -66,23 +54,25 @@ export default {
   },
   data () {
     return {
-      options: {},
+      options: [],
       initOptions: {
-        renderer: 'svg'
+        renderer: 'canvas'
       }
     }
   },
   async asyncData () {
-    let options = await axios.get('/api/v2/visualize/pie')
-    return { options: options.data }
+    let options = [
+      (await axios.get('/api/v2/visualize/pie')).data,
+      (await axios.get('/api/v2/visualize/wordcloud')).data,
+      (await axios.get('/api/v2/visualize/line')).data,
+      (await axios.get('/api/v2/visualize/bar')).data,
+    ]
+    return { options: options }
   }
 }
 </script>
 
 <style scoped lang="scss">
   @import "~assets/css/components/main";
-  .dashboard {
-    width: calc(100vw - 50px);
-    height: calc(100vh - 50px);
-  }
+  @import "~assets/css/layout/grid";
 </style>
