@@ -85,7 +85,7 @@ router.get('/v2/visualize/bar', async (req, res) => {
         count: { $sum : 1 }
       }
     }
-  ])
+  ]).exec()
 
   res.status(200).json({
     xAxis: {

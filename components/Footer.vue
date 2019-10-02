@@ -34,6 +34,6 @@ export default {
       padding: 10px 0;
       background: #fff;
       box-shadow: 0 0 5px rgba(0,0,0,.12);
-      z-index: 100000;
+      z-index: 1050;
   }
 </style>

@@ -29,6 +29,13 @@ import 'echarts-wordcloud'
 import '~/node_modules/echarts/lib/chart/bar'
 import '~/node_modules/echarts/lib/chart/line'
 import '~/node_modules/echarts/lib/chart/pie'
+import '~/node_modules/echarts/lib/component/tooltip'
+import '~/node_modules/echarts/lib/component/polar'
+import '~/node_modules/echarts/lib/component/geo'
+import '~/node_modules/echarts/lib/component/legend'
+import '~/node_modules/echarts/lib/component/title'
+import '~/node_modules/echarts/lib/component/visualMap'
+import '~/node_modules/echarts/lib/component/dataset'
 
 export default {
   layout: 'service',
