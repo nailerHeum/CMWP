@@ -105,10 +105,6 @@ router.post('/v2/intelligences/', (req, res) => {
     })
 })
 
-router.put('/v2/intelligences/:intelligence_id', (req, res) => {
-    res.end()
-})
-
 router.delete('/v2/intelligences/:intelligence_id', (req, res) => {
     Intelligences.deleteOne({ _id: req.params.intelligence_id }, (err, data) => {
         if (err) {

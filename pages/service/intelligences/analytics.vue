@@ -6,7 +6,12 @@
             <Message icon="fas fa-exclamation-triangle" alert="uk-alert-danger" message="데이터가 없습니다." v-show="!chkError" />
         </div>
         <div class="container-wrapper" v-else>
-          <Message icon="fas fa-exclamation-triangle" alert="uk-alert-danger" message="시각화 모듈이 현재 실행 상태가 아닙니다." :class="{ 'valign-center': true, 'full-width': true }" />
+          <!-- <Message icon="fas fa-exclamation-triangle" alert="uk-alert-danger" message="시각화 모듈이 현재 실행 상태가 아닙니다." :class="{ 'valign-center': true, 'full-width': true }" /> -->
+          <ECharts
+            :options="pie"
+            :init-options="initOptions"
+            autoresize
+          />
         </div>
     </main>
 </template>
@@ -14,12 +19,14 @@
 <script>
 import axios from 'axios'
 import Message from '~/components/Message.vue'
+import ECharts from '~/components/ECharts.vue'
+import '~/node_modules/echarts/lib/chart/pie'
 
 export default {
   layout: 'service',
   middleware: 'auth',
   components: {
-    Message
+    Message, ECharts
   },
   computed: {
     getCount () {
@@ -38,6 +45,9 @@ export default {
   },
   data () {
     return {
+      initOptions: {
+        renderer: 'canvas'
+      }
     }
   }
 }
