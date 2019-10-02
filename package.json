@@ -50,7 +50,7 @@
     "mongodb": "^3.3.2",
     "mongoose": "^5.6.8",
     "node-horseman": "^3.3.0",
-    "nuxt": "latest",
+    "nuxt": "^2.10.0",
     "nuxt-session": "^1.0.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
