@@ -25,7 +25,9 @@ import axios from 'axios'
 import Message from '~/components/Message.vue'
 import ECharts from '~/components/ECharts.vue'
 
-import 'echarts-wordcloud'
+if (process.client) {
+  require('echarts-wordcloud')
+}
 import '~/node_modules/echarts/lib/chart/bar'
 import '~/node_modules/echarts/lib/chart/line'
 import '~/node_modules/echarts/lib/chart/pie'
