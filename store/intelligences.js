@@ -1,6 +1,10 @@
 import { intAPI } from '../lib/api'
 
 export const state = () => ({
+    cntTypes: {
+      social: 0,
+      comm: 0
+    },
     count: 0,
     error: false,
     result: false,
@@ -8,6 +12,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+    setCntTypes (state, data) {
+      state.cntTypes = data
+    },
     setData (state, data) {
       state.data = data
     },
@@ -36,6 +43,7 @@ export const actions = {
           store.commit('setCount', data.result.length)
           store.commit('setData', data.result)
           store.commit('setResult', true)
+          store.commit('setCntTypes', { social: data.result.filter(item => item.item.meta.int_type == 'INTSOCIAL').length, comm: data.result.filter(item => item.item.meta.int_type == 'INTCOMM').length})
         }
       }).catch(data => {
         console.error(data)
@@ -51,5 +59,6 @@ export const actions = {
 export const getters = {
     getData: state => (state.data),
     chkError: state => (state.error),
-    getCount: state => ([state.data.filter(each => each.item.type == "trend").length, state.data.filter(each => each.item.type == "policy").length])
+    getCount: state => ([state.data.filter(each => each.item.type == "trend").length, state.data.filter(each => each.item.type == "illegality").length]),
+    getCntTypes: state => (state.cntTypes)
 }

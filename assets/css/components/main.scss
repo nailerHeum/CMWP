@@ -22,7 +22,7 @@ main {
     margin-top: 20px;
 }
 
-#appliedInt > .count {
+[data-role="intDescription"] > .count {
   opacity: .5;
   transition: .25s opacity ease-out;
   &:hover {

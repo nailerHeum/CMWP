@@ -44,7 +44,7 @@ router.get('/v2/visualize/wordcloud', async (req, res) => {
   ]).exec()
 
   for (let tmp of agg) {
-    let temp = tmp._id.replace('#', '').replace('@', '').replace('^', '').replace('%', '').replace('&', '').replace('*', '').replace('$', '').replace('.', ' ').replace(',', '').replace('\'', '').replace('"', '').replace('-', '').replace('~', '').replace('?', '').replace('!', '').split(' ')
+    let temp = tmp._id.replace('  ', ' ').replace('#', '').replace('@', '').replace('^', '').replace('%', '').replace('&', '').replace('*', '').replace('$', '').replace('.', ' ').replace(',', '').replace('\'', '').replace('"', '').replace('-', '').replace('~', '').replace('?', '').replace('!', '').split(' ')
     for (let word of temp) {
       if (!wordFreq[word]) {
         wordFreq[word] = 1

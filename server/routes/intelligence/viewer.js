@@ -31,17 +31,18 @@ router.get('/v2/intelligence/viewer/:intelligence_id', (req, res, next) => {
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/font-kopub/1.0/kopubdotum.css">
                         <style>
                             html, body, * {
-                            font-family: 'KoPub Dotum' !important;
+                                font-family: 'KoPub Dotum' !important;
+                                font-size: 14px;
                             }
                             body {
                                 max-width: 793.700787px;
                             }
                             .left-top-copyright {
-                            display: inline-block;
+                                display: inline-block;
                             }
                             .left-top-copyright img {
-                            width: 200px;
-                            height: auto;
+                                width: 100px;
+                                height: auto;
                             }
                         </style>
                         </head>
@@ -64,7 +65,7 @@ router.get('/v2/intelligence/viewer/:intelligence_id', (req, res, next) => {
                                         </tr>
                                         <tr>
                                             <th>카테고리</th>
-                                            <td>${data.category}</td>
+                                            <td>${data.meta.int_type == 'INTSOCIAL' ? 'RT' : data.category}</td>
                                         </tr>
                                         <tr>
                                             <th>제목</th>
