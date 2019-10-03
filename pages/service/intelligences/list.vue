@@ -56,7 +56,6 @@ export default {
       return this.$store.getters['intelligences/chkError']
     },
     getCntTypes () {
-      console.log(this.$store.getters['intelligences/getCntTypes'])
       return this.$store.getters['intelligences/getCntTypes']
     }
   },
@@ -71,8 +70,8 @@ export default {
       notice: '데이터 수신 중입니다. 잠시만 기다려주세요.'
     }
   },
-  beforeMount () {
-    this.$store.dispatch('intelligences/getData')
+  created () {
+    this.$store.dispatch('intelligences/getData', { account: this.$store.getters['getUserEmail'], mode: this.$store.getters['getUserMode'] })
   },
   mounted () {
     this.notice = ''

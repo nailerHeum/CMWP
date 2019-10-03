@@ -11,27 +11,50 @@ const jsonStrings = {
 }
 
 // Intelligences DB Handler
-router.get('/v2/intelligences/', (req, res) => {
-    Intelligences.find((err, intelligences) => {
-        if (err) {
-            res.status(500).send({
-                title: jsonStrings.title,
-                status: {
-                    code: 500,
-                    message: err
-                }
-            })
-        } else {
-            res.json({
-                title: jsonStrings.title,
-                status: {
-                    code: 200,
-                    message: jsonStrings.msg_ok
-                },
-                result: intelligences
-            })
-        }
-    })
+router.get('/v2/intelligences', (req, res) => {
+    if (req.query.by) {
+        Intelligences.find({ 'item.created_by': req.query.by }, (err, intelligences) => {
+            if (err) {
+                res.status(500).send({
+                    title: jsonStrings.title,
+                    status: {
+                        code: 500,
+                        message: err
+                    }
+                })
+            } else {
+                res.json({
+                    title: jsonStrings.title,
+                    status: {
+                        code: 200,
+                        message: jsonStrings.msg_ok
+                    },
+                    result: intelligences
+                })
+            }
+        })
+    } else {
+        Intelligences.find((err, intelligences) => {
+            if (err) {
+                res.status(500).send({
+                    title: jsonStrings.title,
+                    status: {
+                        code: 500,
+                        message: err
+                    }
+                })
+            } else {
+                res.json({
+                    title: jsonStrings.title,
+                    status: {
+                        code: 200,
+                        message: jsonStrings.msg_ok
+                    },
+                    result: intelligences
+                })
+            }
+        })
+    }
 })
 
 router.get('/v2/intelligences/:intelligence_id', (req, res) => {

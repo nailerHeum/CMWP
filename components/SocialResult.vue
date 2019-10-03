@@ -101,6 +101,7 @@ export default {
           }
         }
       ]).then(result => {
+        item.created_by = this.$store.state.authUser.email
         item.saved_at = new Date().toISOString()
         item.title = item.details.text
         item.link = ''

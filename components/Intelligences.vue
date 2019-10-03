@@ -44,9 +44,6 @@
 import axios from 'axios'
 
 export default {
-  created () {
-    this.$store.dispatch('intelligences/getData')
-  },
   computed: {
     items () {
       return this.$store.getters['intelligences/getData']

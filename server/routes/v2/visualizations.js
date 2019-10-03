@@ -34,15 +34,23 @@ const LastDays = (n, option) => {
 }
 
 router.get('/v2/visualize/wordcloud', async (req, res) => {
-  let wordFreq = {};
-  let agg = await Intelligences.aggregate([
-    {
-      $group: {
-        _id: '$item.title'
+  let wordFreq = {}
+  let agg
+  if (req.query.by) {
+    agg = await Intelligences.aggregate([
+      { $match: { 'item.created_by': req.query.by } },
+      { $group: { _id: '$item.title' } }
+    ]).exec()
+  } else {
+    agg = await Intelligences.aggregate([
+      {
+        $group: {
+          _id: '$item.title'
+        }
       }
-    }
-  ]).exec()
-
+    ]).exec()
+  }
+  
   for (let tmp of agg) {
     let temp = tmp._id.replace('  ', ' ').replace('#', '').replace('@', '').replace('^', '').replace('%', '').replace('&', '').replace('*', '').replace('$', '').replace('.', ' ').replace(',', '').replace('\'', '').replace('"', '').replace('-', '').replace('~', '').replace('?', '').replace('!', '').split(' ')
     for (let word of temp) {
@@ -78,14 +86,22 @@ router.get('/v2/visualize/wordcloud', async (req, res) => {
 })
 
 router.get('/v2/visualize/bar', async (req, res) => {
-  let agg = await Intelligences.aggregate([
-    {
-      $group: {
-        _id: '$item.type',
-        count: { $sum : 1 }
+  let agg
+  if (req.query.by) {
+    agg = await Intelligences.aggregate([
+      { $match: { 'item.created_by': req.query.by } },
+      { $group: { _id: '$item.type', count: { $sum: 1 } } }
+    ]).exec()
+  } else {
+    agg = await Intelligences.aggregate([
+      {
+        $group: {
+          _id: '$item.type',
+          count: { $sum : 1 }
+        }
       }
-    }
-  ]).exec()
+    ]).exec()
+  }
 
   res.status(200).json({
     xAxis: {
@@ -105,13 +121,24 @@ router.get('/v2/visualize/bar', async (req, res) => {
 router.get('/v2/visualize/line', async (req, res) => {
     let days = LastDays(7)
     let count = [0, 0, 0, 0, 0, 0, 0]
-    let agg = await Intelligences.aggregate([
-      { $project: { date: { $split: ["$item.date", "T"] }} },
-      { $unwind: "$date" },
-      { $match: { date: /[0-9]{4}-[0-9]{2}-[0-9]{2}/ } },
-      { $group: { _id: '$date', count: { $sum: 1 } } }
-    ]).exec()
-
+    let agg
+    
+    if (req.query.by) {
+      agg = await Intelligences.aggregate([
+        { $project: { date: { $split: ["$item.date", "T"] }} },
+        { $unwind: "$date" },
+        { $match: { date: /[0-9]{4}-[0-9]{2}-[0-9]{2}/, 'item.created_by': req.query.by } },
+        { $group: { _id: '$date', count: { $sum: 1 } } }
+      ]).exec()
+    } else {
+      agg = await Intelligences.aggregate([
+        { $project: { date: { $split: ["$item.date", "T"] }} },
+        { $unwind: "$date" },
+        { $match: { date: /[0-9]{4}-[0-9]{2}-[0-9]{2}/ } },
+        { $group: { _id: '$date', count: { $sum: 1 } } }
+      ]).exec()
+    }
+    
     for (let tmp of agg) {
       if (Math.ceil(Math.abs(new Date(days[0]) - new Date(tmp._id))) / (1000 * 60 * 60 * 24) < 7) {
         count[Math.ceil(Math.abs(new Date(days[0]) - new Date(tmp._id))) / (1000 * 60 * 60 * 24)] = tmp.count
@@ -135,15 +162,23 @@ router.get('/v2/visualize/line', async (req, res) => {
 })
 
 router.get('/v2/visualize/pie', async (req, res) => {
-  let agg = await Intelligences.aggregate([
-    {
-      $group: {
-        _id: '$item.meta.site',
-        count: { $sum: 1 }
+  let agg
+  if (req.query.by) {
+    agg = await Intelligences.aggregate([
+      { $match: { 'item.created_by': req.query.by } },
+      { $group: { _id: '$item.meta.site', count: { $sum: 1 } } }
+    ]).exec()
+  } else {
+    agg = await Intelligences.aggregate([
+      {
+        $group: {
+          _id: '$item.meta.site',
+          count: { $sum: 1 }
+        }
       }
-    }
-  ]).exec()
-
+    ]).exec()
+  }
+  
   res.status(200).json({
     title: {
       text: '게시물 스크랩 출처',
@@ -175,10 +210,6 @@ router.get('/v2/visualize/pie', async (req, res) => {
       }
     ]
   })
-})
-
-router.get('/v2/visualize/map', async (req, res) => {
-    
 })
 
 module.exports = router

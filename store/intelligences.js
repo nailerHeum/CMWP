@@ -34,8 +34,8 @@ export const mutations = {
 }
 
 export const actions = {
-    getData (store) {
-      intAPI.getData().then(data => {
+    getData (store, { account, mode }) {
+      intAPI.getData(account, mode).then(data => {
         data = JSON.parse(data)
         if (data.status.code === 404) {
           throw Error(data.status.message)

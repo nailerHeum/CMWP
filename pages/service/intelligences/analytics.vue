@@ -59,7 +59,7 @@ export default {
     }
   },
   beforeMount () {
-    this.$store.dispatch('intelligences/getData')
+    this.$store.dispatch('intelligences/getData', { account: this.$store.getters['getUserEmail'], mode: this.$store.getters['getUserMode'] })
   },
   data () {
     return {
@@ -69,13 +69,23 @@ export default {
       }
     }
   },
-  async asyncData () {
-    let options = [
-      (await axios.get('/api/v2/visualize/pie')).data,
-      (await axios.get('/api/v2/visualize/wordcloud')).data,
-      (await axios.get('/api/v2/visualize/line')).data,
-      (await axios.get('/api/v2/visualize/bar')).data,
-    ]
+  async asyncData ({ app, params, store }) {
+    let options
+    if (store.getters['getUserMode'] !== '관리자') {
+      options = [
+        (await axios.get(`/api/v2/visualize/pie?by=${store.getters['getUserEmail']}`)).data,
+        (await axios.get(`/api/v2/visualize/wordcloud?by=${store.getters['getUserEmail']}`)).data,
+        (await axios.get(`/api/v2/visualize/line?by=${store.getters['getUserEmail']}`)).data,
+        (await axios.get(`/api/v2/visualize/bar?by=${store.getters['getUserEmail']}`)).data
+      ]
+    } else {
+      options = [
+        (await axios.get('/api/v2/visualize/pie')).data,
+        (await axios.get('/api/v2/visualize/wordcloud')).data,
+        (await axios.get('/api/v2/visualize/line')).data,
+        (await axios.get('/api/v2/visualize/bar')).data
+      ]
+    }
     return { options: options }
   }
 }

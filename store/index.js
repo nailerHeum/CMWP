@@ -70,5 +70,7 @@ export const mutations = {
 }
 
 export const getters = {
+    getUserEmail: state => state.authUser.email,
+    getUserMode: state => state.authUser.mode,
     getUserList: state => state.userList
 }
