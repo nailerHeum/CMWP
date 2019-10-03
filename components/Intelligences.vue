@@ -19,9 +19,9 @@
             <td>{{ item.item.meta.int_type === 'INTCOMM'? '커뮤니티' : 'SNS' }}</td>
             <td><a target="_blank" :href="item.item.link">{{ item.item.title.replace(/(^\s*)|(\s*$)/gi, '') }}</a></td>
             <td>{{ item.item.author }}</td>
-            <td>{{ new Date(item.item.saved_at).toLocaleDateString() }}</td>
+            <td>{{ new Date(item.item.saved_at).toISOString().split('T')[0] }}</td>
             <td>
-              <button @click="item.item.meta.int_type === 'INTCOMM' ? screenshotPreview(item.screenshot) : screenshotPreview(item.item.link, item.item.meta.int_type)" class="uk-button uk-button-secondary uk-text-nowrap">
+              <button @click="screenshotPreview(item.screenshot)" class="uk-button uk-button-secondary uk-text-nowrap">
                 <i class="fas fa-images"></i>
                 <span class="btn-desc">페이지 캡처 보기</span>
               </button>
@@ -31,7 +31,7 @@
               </button>
               <button class="uk-button uk-button-danger uk-text-nowrap" @click='deleteInt(item._id)'>
                 <i class="fas fa-trash"></i>
-                <span class="btn-desc">첩보 삭제</span>
+                <span class="btn-desc">삭제</span>
               </button>
             </td>
           </tr>
@@ -44,12 +44,8 @@
 import axios from 'axios'
 
 export default {
-  created () {
-    this.$store.dispatch('intelligences/getData')
-  },
   computed: {
     items () {
-      console.log(this.$store.getters['intelligences/getData'])
       return this.$store.getters['intelligences/getData']
     }
   },
@@ -64,7 +60,7 @@ export default {
       })
     },
     int_type (type) {
-      if (type === 'policy') return '정책'
+      if (type === 'illegality') return '정책'
       else if (type === 'trend') return '동향'
     },
     getViewer (link) {
@@ -88,7 +84,7 @@ export default {
           axios.delete(`/api/v2/intelligences/${id}`).then(response => {
             if (response.data.status.code === 200) {
               this.$store.dispatch('intelligences/removeItem', id)
-              swal('삭제 완료', '첩보가 삭제되었습니다.', 'success')
+              swal('삭제 완료', '삭제되었습니다.', 'success')
             } else {
               throw Error(response)
             }
@@ -103,7 +99,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 table {
   font-weight: 600;
   & a {
@@ -113,5 +108,4 @@ table {
     }
   }
 }
-
 </style>

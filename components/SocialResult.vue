@@ -67,13 +67,13 @@ export default {
           cancelButtonText: '취소',
           inputOptions: {
             'trend': '특이동향',
-            'policy': '법규위반의심'
+            'illegality': '법규위반의심'
           },
           inputPlaceholder: '유형 선택(특이동향 혹은 법규위반의심)',
           showCancelButton: true,
           inputValidator: (value) => {
             return new Promise((resolve) => {
-              if (value === 'trend' || value === 'policy') {
+              if (value === 'trend' || value === 'illegality') {
                 resolve()
               } else {
                 resolve('옵션을 선택하세요.')
@@ -82,13 +82,14 @@ export default {
           }
         },
         {
-          title: '저장',
+          title: '상세 내용 입력',
           input: 'textarea',
           inputPlaceholder: '상세 내용을 입력해주세요.',
           showCancelButton: true,
           showLoaderOnConfirm: true,
           confirmButtonText: '저장',
           cancelButtonText: '취소',
+          preConfirm: () => {},
           inputValidator: (value) => {
             return new Promise((resolve) => {
               if (value.length > 0) {
@@ -100,6 +101,7 @@ export default {
           }
         }
       ]).then(result => {
+        item.created_by = this.$store.state.authUser.email
         item.saved_at = new Date().toISOString()
         item.title = item.details.text
         item.link = ''
@@ -113,35 +115,35 @@ export default {
         item.date = new Date(item.details.created_at).toISOString()
         item.content = result.value[1]
         item.type = result.value[0]
-        swal({ title: '저장 중...', html: '인터넷 서비스 상태에 따라 처리시간이 소요될 수 있습니다.', allowOutsideClick: false, width: '90vw' })
+        swal({ title: '데이터 저장을 위한 작업 진행중입니다.', html: '인터넷 서비스 상태에 따라 처리시간이 소요될 수 있습니다.', allowOutsideClick: false, width: '90vw' })
         swal.showLoading()
-        axios.post(`/api/v2/intelligences/`, { id: item.details.id, item: item })
+        axios.get('/api/v2/service/screenshot?url=' + encodeURI(item.link))
           .then(response => {
             swal.close()
-            if (item.link !== '') {
-              swal({ title: '페이지 스크린샷 저장 중...', html: '인터넷 서비스 상태에 따라 처리시간이 소요될 수 있습니다.', allowOutsideClick: false, width: '90vw' })
-              swal.showLoading()
-              axios.post(`/api/v2/service/screenshot`, { id: btoa(item.link), item: item })
-                .then(sRes => {
-                  swal.close()
-                  if (response.status === 200 && response.data.result === 'created') {
-                    swal('저장 완료', '저장되었습니다.', 'success')
-                  } else if (response.status === 200 && response.data.result === false) {
-                    swal('저장하지 않음', '이미 저장된 내용입니다.', 'warning')
-                  }
-                })
+             if (response.status === 200) {
+              axios.post(`/api/v2/intelligences/`, { identifier: btoa(encodeURI(item.link)), item: item, screenshot: response.data.result })
+              .then(sRes => {
+                if (sRes.status === 201) {
+                  swal('저장 완료', '저장되었습니다.', 'success')
+                } else {
+                  throw Error('데이터 저장 과정에서 알 수 없는 오류가 발생하였습니다.')
+                }
+              })
+              .catch(error => {
+                if (error.response.status === 409) {
+                  swal('저장 실패', error.response.data.status.message, 'warning')
+                } else {
+                  swal('저장 실패', error.response.data.statusText, 'error')
+                }
+              })
             } else {
-              if (response.status === 200 && response.data.result === 'created') {
-                swal('저장 완료', '저장되었습니다.', 'success')
-              } else if (response.status === 200 && response.data.result === false) {
-                swal('저장하지 않음', '이미 저장된 내용입니다.', 'warning')
-              }
+              throw Error('페이지 스크린샷 과정에서 알 수 없는 오류가 발생하였습니다.')
             }
-            if (response.dismiss === Swal.DismissReason.backdrop) {}
+            if (response.dismiss === Swal.DismissReason.backdrop) { }
           }).catch(error => {
             swal(error, '저장 중 에러 발생', 'error')
           })
-      })
+        })
     }
   }
 }

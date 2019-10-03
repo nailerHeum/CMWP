@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
         enum: ['관리자', '일반'],
         default: '일반'
     },
+    usable: {
+        type: Boolean,
+        default: false
+    },
     created: {
         type: Date,
         default: Date.now

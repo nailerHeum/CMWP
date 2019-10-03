@@ -1,0 +1,14 @@
+.grid {
+    display: grid;
+}
+
+.grid-half {
+    grid-template-columns: minmax(0, 1fr) 50%;
+    grid-gap: 15px;
+}
+
+@media (max-width: 600px) {
+    .grid-half {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

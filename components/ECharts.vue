@@ -2,13 +2,6 @@
     <div class="echarts"></div>
 </template>
 
-<style>
-.echarts {
-  width: 600px;
-  height: 400px;
-}
-</style>
-
 <script>
 import echarts from 'echarts/lib/echarts'
 import debounce from 'lodash/debounce'
@@ -298,3 +291,19 @@ export default {
   graphic: echarts.graphic
 }
 </script>
+
+<style lang="scss">
+.echarts {
+  position: relative;
+  width: calc(100% - 2 * 15px);
+  height: 400px;
+  background: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,.12);
+  border-radius: 15px;
+  padding: 15px;
+  transition: .2s all ease-in;
+  &:hover {
+    box-shadow: 0 0 15px rgba(0,0,0,.25);
+  }
+}
+</style>

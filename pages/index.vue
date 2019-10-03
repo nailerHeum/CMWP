@@ -9,7 +9,11 @@ export default {
   layout: 'service',
   middleware: 'auth',
   beforeMount () {
-    this.$router.push('/service/intelligences/analytics')
+    if (this.$store.state.authUser.usable) {
+      this.$router.push('/service/intelligences/analytics')
+    } else {
+      this.$router.push('/waitForUsable')
+    }
   },
 }
 </script>

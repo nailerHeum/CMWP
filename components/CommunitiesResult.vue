@@ -3,7 +3,7 @@
         <div class="commInfo flex uk-card uk-card-default uk-card-body" :data-comm-type="type">
           <span class="uk-label uk-label-danger uk-position-small uk-position-top-right">{{ name }}</span>
           <div class="flex-half flex-left">
-            <img class="uk-margin-right" :src="this.commLogos[type]['src']" :alt="type" :style="{ 'max-height': '100px', background: this.commLogos[type]['background'] }">
+            <img class="uk-margin-right" :src="this.commLogos[type]['src']" :alt="type" :style="{ 'max-width': '200px', 'max-height': '100px', background: this.commLogos[type]['background'] }">
           </div>
           <div class="flex flex-half flex-right">
             <span>{{ count }}</span>
@@ -20,7 +20,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in data" :key="type + '-' + item.title + '-' + item.author">
+            <tr v-for="item in data" :key="item.link">
               <td data-role="category" class="uk-width-small">{{ item.category }}</td>
               <td data-role="title" class="uk-text-truncate"><a :data-link="item.link" uk-tooltip="title: 누르면 게시물 내용을 볼 수 있습니다.; pos: bottom-left;" @click="postPreview(item)">{{ item.title.trim() }}</a></td>
               <td data-role="title">{{ item.author }}</td>
@@ -77,7 +77,7 @@ export default {
           background: 'transparent'
         },
         'CT09': {
-          src: 'https://w.namu.la/s/4ae52de017a07e785069f4c91a46931a41ad9033d21bbcd76a978c07b3fd67d24073e5a03d9099af52c36a3d43311fe4789c95514285160be8fdbe15a1558861953047136e617096070726f8444c80133b068a797cb07857fd614b3cd89e2667',
+          src: 'https://pbs.twimg.com/profile_images/660745582537928705/Q0A3ogh7_400x400.jpg',
           background: 'transparent'
         },
         'CT10': {
@@ -85,7 +85,7 @@ export default {
           background: 'transparent'
         },
         'CT11': {
-          src: 'https://www.dogdrip.net/files/attach/images/174688197/8ec7b0c15a0f2468744a22bae1d73a47.gif',
+          src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfMAAABlCAMAAABumfqTAAAAZlBMVEX///8AAADKysr09PRcXFyYmJjq6uqGhoagoKD39/fW1tY0NDQ4ODjOzs6Pj48ODg7i4uJGRkZVVVUjIyPExMQdHR0XFxfZ2dmBgYGkpKQRERFJSUmbm5uLi4tTU1NhYWFra2srKyt0VOAOAAAEH0lEQVR4nO2da1fiMBRFC+pIdSqI+EBH0f//J2ctU5oE7iWPJtzQnP2RFe86OZviTGlr0wAAAAAAgInRbuYWm6vppunK2OQ4hoY20SP+zA54bhMGHJ3mKWWap2HsXcKp56XV3UTPOGpZVPpxmpTS7+H8l+OWJaUTaRJKh3MF0bKg9Lxp4FxBtSwnPW8aOFeQLc9ehP5hS6dJJR3OFXTLs3cZ6UyalzTS4VzBtCwknUuT5nMHzhVGyyur5qWEdCPNq/0WTHGkw7nCaLm5E5dupumSp4FzhdnygfTZ+aWfSLMcf6T/wPkvVsvi0k+lGX+kf697PlYJssqQ3rm09LLSlEgG58I1l5WmRHI4l625rDQlksW5aM1lpSmRPM4lay4rTYlkct68itVMpYF0k1zOD6R3CaKOSXMnlaZEsjm3pUs7F0tTIvmcWzWLO5dKUyIZnZs1my23V07MKe7V9hnVc6Vp4odwBI9xr2+J5UZDrXe2A7iWmw+y5X8zJ+aQZ+fqN780j2Sam7A0L8Or5vn2h7AhHMFj3p3rzW5W3KII6YEtb8N29te5+nZMmkVYGvp7NfcbZ+lTZPCYe+cPfBqr4bwHzuHckQbOFXAO5wNwPgDnLswhcM6PgfOoNHB+Xuef1uoreox2bl+NpMckcv7gk8bl/IbJEujcc4xOw3VjV9zDNRRAtHMvWdq5fdXhImyM27nXGJdz+42jj6xA555jdJpX63V92otynvPcK5zDeQ+cc8B5D5zD+R44h/PINHAeBZzLOw/5vxqch40p1TkHnBNp4DyKSTpngHMFnMP5AJxzsmjgvAfO4XwPnMN5ZBo4jwLO4XwAzjlZNBmc2/d7KOCcGcNQqvPO596lHjifhnP7O5bTwDmcxwDncD4A53CugHMOOO+BczjfA+dwHplGwvnua/+k4PXjKn5MAucqQ8TjrgOfLRJ975K9r+T3LiVx7nXTkfm4lFEfF9z1cKcxnCvG3a+2uzbY6Yev0M7vreVrWpZ2/mEN16+zzn3SJHZub+mLlqX/GGMy51/XJOstsYfEzjlk7kv1SZPYOUdu5xzUpuCcGcNwac4d36sp4PwkcK6AczgngHNzCJwTmNPhHM6PgXMeOCfSwHku53NjeeAzfp+cq0c512moS8eO0KfQwpxbWzJfpx8VbKta0WPCn3+sSOG83cxdmFNXztXmO6Tp6CXd2xD5Nk0ar9OXHTlEO/9m4rJb8slibIlLw0Fu6qChjc/Gi4A73y4B96EM0hL4izgrcH4e4Lw+4Lw+4Lw+4Lw+4Lw+4Lw+4Lw+4Lw+4Lw+4Lw+cL59umwXJNsdnE+Wn5kLOJ8aodfJSADnaYHz+oDz+oDz+oDz+rgs5+TfqgSBXILz+c2ey7mGtGR+nM69LkwHF8TiwQWOLQAAiOA/4B1+zKlG8+UAAAAASUVORK5CYII=',
           background: '#0054A6'
         },
         'CT12': {
@@ -155,7 +155,7 @@ export default {
         }
         if (['CT01', 'CT06', 'CT08', 'CT09', 'CT11'].indexOf(item.meta.code) >= 0) {
           let reqUrl 
-          if (['CT06', 'CT11'].indexOf(item.meta.code) >= 0 && this.keyword.length === 0) {
+          if (['CT01', 'CT08', 'CT06', 'CT11'].indexOf(item.meta.code) >= 0 && this.keyword.length === 0) {
             reqUrl = `/api/v2/communities/${item.meta.code}/get_content?site_url=${item.link}`
           } else {
             reqUrl = `/api/v2/communities/${item.meta.code}/get_content?site_url=${url.origin}/${url.searchParams.get('document_srl')}`
@@ -185,13 +185,13 @@ export default {
           cancelButtonText: '취소',
           inputOptions: {
             'trend': '특이동향',
-            'policy': '법규위반의심'
+            'illegality': '법규위반의심'
           },
           inputPlaceholder: '유형 선택(동향 혹은 법규위반의심)',
           showCancelButton: true,
           inputValidator: (value) => {
             return new Promise((resolve) => {
-              if (value === 'trend' || value === 'policy') {
+              if (value === 'trend' || value === 'illegality') {
                 resolve()
               } else {
                 resolve('옵션을 선택하세요.')
@@ -200,13 +200,14 @@ export default {
           }
         },
         {
-          title: '저장',
+          title: '상세 내용 입력',
           input: 'textarea',
           inputPlaceholder: '상세 내용을 입력해주세요.',
           showCancelButton: true,
           showLoaderOnConfirm: true,
           confirmButtonText: '저장',
           cancelButtonText: '취소',
+          preConfirm: () => {},
           inputValidator: (value) => {
             return new Promise((resolve) => {
               if (value.length > 0) {
@@ -218,6 +219,7 @@ export default {
           }
         }
       ]).then(result => {
+        item.created_by = this.$store.state.authUser.email
         item.content = result.value[1]
         item.type = result.value[0]
         item.saved_at = new Date().toISOString()

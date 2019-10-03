@@ -3,7 +3,7 @@ const cheerio = require('cheerio')
 module.exports = {
   CT01 (body) {
     const $ = cheerio.load(body)
-    const content = $('.xe_content')
+    const content = $('.post-content')
     return content.html()
   },
   CT02 (body) {
@@ -33,7 +33,7 @@ module.exports = {
   },
   CT08 (body) {
     const $ = cheerio.load(body)
-    const content = $('.xe_content')
+    const content = $('.post-content')
     return content.html()
   },
   CT09 (body) {

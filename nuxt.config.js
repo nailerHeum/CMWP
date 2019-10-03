@@ -19,15 +19,8 @@ module.exports = {
       { src: '//cdn.polyfill.io/v2/polyfill.min.js' },
     ]
   },
-  /*
-  ** Global CSS
-  */
-  //  css: ['~/assets/css/main.css'],
   build: {
-    vendor: ['axios' , 'babel-polyfill'],
-    /*
-    ** Run ESLINT on save
-    */
+    vendor: ['axios' , 'babel-polyfill', 'echarts', 'echarts-wordcloud', 'vue-echarts'],
     extend (config, { isDev }) {
       if (isDev && process.client) {
         config.module.rules.push({
@@ -41,7 +34,6 @@ module.exports = {
   },
   modules: ['nuxt-session'],
   serverMiddleware: [
-    // API middleware
     '~/server/index.js'
   ]
 }
