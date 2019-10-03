@@ -102,7 +102,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 table {
   font-weight: 600;
   & a {
@@ -112,5 +111,4 @@ table {
     }
   }
 }
-
 </style>

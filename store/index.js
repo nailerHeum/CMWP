@@ -1,7 +1,9 @@
 import axios from 'axios'
+import { userAPI } from '../lib/api'
 
 export const state = () => ({
-  authUser: null
+  authUser: null,
+  userList: null
 })
 
 export const actions = {
@@ -43,11 +45,30 @@ export const actions = {
       } catch (error) {
           throw new Error('패스워드가 잘못 입력되었습니다.')
       }
+  },
+  getUsers ({ commit, state }) {
+    if (state.authUser) {
+        if (state.authUser.mode === '관리자') {
+            userAPI.getData().then(data => {
+                data = JSON.parse(data)
+                if (data.status.code === 200) {
+                    commit('SET_USER_LIST', data.result)
+                }
+            })
+        }
+    }
   }
 }
 
 export const mutations = {
   SET_USER: (state, user) => {
       state.authUser = user
+  },
+  SET_USER_LIST (state, users) {
+    state.userList = users
   }
+}
+
+export const getters = {
+    getUserList: state => state.userList
 }

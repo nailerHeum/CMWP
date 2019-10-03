@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 var Intelligences = require('../../models/intelligence')
+var Users = require('../../models/user')
 
 const jsonStrings = {
     title: 'Communities Monitoring Works Portal V2',
@@ -107,6 +108,54 @@ router.post('/v2/intelligences/', (req, res) => {
 
 router.delete('/v2/intelligences/:intelligence_id', (req, res) => {
     Intelligences.deleteOne({ _id: req.params.intelligence_id }, (err, data) => {
+        if (err) {
+            res.status(500).json({
+                title: jsonStrings.title,
+                status: {
+                    code: 500,
+                    message: err
+                }
+            })
+        }
+        if (data) {
+            res.status(200).json({
+                title: jsonStrings.title,
+                status: {
+                    code: 200,
+                    message: data
+                },
+                message: data
+            })
+        }
+    })
+})
+
+// User DB Handler
+router.get('/v2/users/', (req, res) => {
+    Users.find((err, users) => {
+        if (err) {
+            res.status(500).send({
+                title: jsonStrings.title,
+                status: {
+                    code: 500,
+                    message: err
+                }
+            })
+        } else {
+            res.json({
+                title: jsonStrings.title,
+                status: {
+                    code: 200,
+                    message: jsonStrings.msg_ok
+                },
+                result: users
+            })
+        }
+    })
+})
+
+router.delete('/v2/user/:account', (req, res) => {
+    Users.deleteOne({ email: req.params.account }, (err, data) => {
         if (err) {
             res.status(500).json({
                 title: jsonStrings.title,
