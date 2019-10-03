@@ -155,7 +155,7 @@ export default {
         }
         if (['CT01', 'CT06', 'CT08', 'CT09', 'CT11'].indexOf(item.meta.code) >= 0) {
           let reqUrl 
-          if (['CT06', 'CT11'].indexOf(item.meta.code) >= 0 && this.keyword.length === 0) {
+          if (['CT01', 'CT08', 'CT06', 'CT11'].indexOf(item.meta.code) >= 0 && this.keyword.length === 0) {
             reqUrl = `/api/v2/communities/${item.meta.code}/get_content?site_url=${item.link}`
           } else {
             reqUrl = `/api/v2/communities/${item.meta.code}/get_content?site_url=${url.origin}/${url.searchParams.get('document_srl')}`

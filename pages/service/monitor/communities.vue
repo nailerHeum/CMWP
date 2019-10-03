@@ -5,8 +5,8 @@
       <div class="content" data-role="content-start">
         <div data-role="form">
           <div class="input">
-            <input type="text" placeholder="검색 키워드를 입력하세요" required v-model="keyword" @keyup.delete.exact="clear" @keyup.enter.exact="crawl()" @focus="focus">
-            <button class="button red" @click.exact="crawl()">
+            <input type="text" placeholder="검색 키워드를 입력하세요" required v-model="keyword" @keyup.delete.exact="clear" @keyup.enter.exact="crawl('enter')" @focus="focus">
+            <button class="button red" @click.exact="crawl('click')">
               <i class="fas fa-search" v-if="!this.lblSearchAll"></i>
               <p v-else>최신글 전체</p>
             </button>
@@ -132,8 +132,8 @@ export default {
       this.noticeAlert = 'uk-alert-warning'
       this.notice = '키워드를 입력하고 엔터키를 누르세요.'
     },
-    crawl () {
-      if (this.lblSearchAll || !(!this.keyword.trim() || this.keyword.length < 2)) {
+    crawl (triggerBy) {
+      if ((triggerBy == 'click' && this.lblSearchAll) || !(!this.keyword.trim() || this.keyword.length < 2)) {
         swal({ title: '데이터 수집 중입니다...', html: '수집이 완료되면 창이 자동으로 닫힙니다.', allowOutsideClick: false, width: '90vw' })
         swal.showLoading()
         this.error = ''
