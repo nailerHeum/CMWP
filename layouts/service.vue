@@ -28,7 +28,7 @@ export default {
         { index: "int-2", divider: true, icon: "fas fa-chart-pie", link: '/service/intelligences/analytics', title: '게시물분석' },
         { index: "mon-1", divider: false, icon: "fas fa-users", link: '/service/monitor/communities', title: '커뮤니티게시물모니터링' },
         { index: "mon-3", divider: true, icon: "fab fa-twitter", link: '/service/monitor/social', title: 'SNS게시물모니터링' },
-        { index: "auth-admin", divider: false, icon: "fas fa-cog", link: '/admin/manage', title: '관리자', admin: true },
+        { index: "auth-admin", divider: false, icon: "fas fa-cog", link: '/admin/manage', title: '관리자', admin: this.$store.state.authUser.mode == '관리자' },
         { index: "auth-lg", divider: true, icon: "fas fa-sign-out-alt", link: '/', title: '로그아웃', logout: true },
       ]
     }

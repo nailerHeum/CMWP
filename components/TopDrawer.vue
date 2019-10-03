@@ -4,7 +4,7 @@
             <a class="service" :href="home_url" uk-tooltip="title: 첫페이지로 이동합니다.; pos: bottom-left;">
                 <h1 class="logo">커뮤니티게시물모니터링포털</h1>
             </a>
-            <span class="breadcrumb">{{ title }}</span>
+            <span class="breadcrumb">{{ title }} | {{ `${this.$store.state.authUser.email} (${this.$store.state.authUser.mode})` }}</span>
             <a class="nav_right" href="/" uk-tooltip="title: 커뮤니티게시물모니터링포털 첫페이지로 이동합니다.; pos: bottom-left;"><i class="fas fa-home"></i></a>
         </nav>
     </header>
