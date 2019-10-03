@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const bcrypt = require('bcrypt')
 const router = Router()
 var Intelligences = require('../../models/intelligence')
 var Users = require('../../models/user')
@@ -149,6 +150,58 @@ router.get('/v2/users/', (req, res) => {
                     message: jsonStrings.msg_ok
                 },
                 result: users
+            })
+        }
+    })
+})
+
+router.put('/v2/user/:account/usable', (req, res) => {
+    Users.updateOne({ email: req.params.account }, { $set: { usable: true } }, (err, data) => {
+        if (err) {
+            res.status(500).json({
+                title: jsonStrings.title,
+                status: {
+                    code: 500,
+                    message: err
+                }
+            })
+        }
+        if (data) {
+            res.status(200).json({
+                title: jsonStrings.title,
+                status: {
+                    code: 200,
+                    message: data
+                },
+                message: data
+            })
+        }
+    })
+})
+
+router.put('/v2/user/:account/password', async (req, res) => {
+    let resetPW = `CMWPservice_${req.params.account.split('@')[0]}`
+    let salt = bcrypt.genSaltSync(10)
+    let hash = bcrypt.hashSync(resetPW, salt)
+    
+    Users.updateOne({ email: req.params.account }, { $set: { password: hash } }, (err, data) => {
+        if (err) {
+            res.status(500).json({
+                title: jsonStrings.title,
+                status: {
+                    code: 500,
+                    message: err
+                }
+            })
+        }
+        if (data) {
+            res.status(200).json({
+                title: jsonStrings.title,
+                status: {
+                    code: 200,
+                    message: data
+                },
+                message: data
             })
         }
     })
